@@ -3,18 +3,22 @@ from bs4 import BeautifulSoup
 import json
 import tkinter as tk
 from tkinter import ttk, messagebox
+from dotenv import load_dotenv
+import os
 import pandas as pd
 
-def buscar_id_anime_por_nome(nome_anime):
-    search_url = f"https://myanimelist.net/search/all?q={nome_anime.replace(' ', '%20')}"
+# Carregar variáveis de ambiente do arquivo .env
+load_dotenv()
+gemini_api_key = os.getenv('GEMINI_API_KEY')
+
+def buscar_id_anime_por_descricao(descricao):
+    search_url = f"https://api.gemini.com/v1/anime/search?description={descricao.replace(' ', '%20')}&api_key={gemini_api_key}"
     response = requests.get(search_url)
     
     if response.status_code == 200:
-        soup = BeautifulSoup(response.text, 'html.parser')
-        result = soup.find('a', class_='hoverinfo_trigger fw-b fl-l')
-        if result:
-            anime_url = result['href']
-            anime_id = anime_url.split('/')[-2]
+        data = response.json()
+        if data and 'results' in data and len(data['results']) > 0:
+            anime_id = data['results'][0]['id']
             return anime_id
     return None
 
@@ -48,8 +52,8 @@ def exibir_anime(anime_data):
         messagebox.showerror("Erro", "Não foi possível buscar os dados do anime.")
 
 def buscar_anime():
-    nome_anime = entry_nome.get()
-    anime_id = buscar_id_anime_por_nome(nome_anime)
+    descricao = entry_descricao.get()
+    anime_id = buscar_id_anime_por_descricao(descricao)
     if anime_id:
         anime_data = buscar_anime_por_id(anime_id)
         exibir_anime(anime_data)
@@ -63,10 +67,10 @@ def buscar_anime():
         messagebox.showerror("Erro", "Não foi possível encontrar o ID do anime.")
 
 def main():
-    global text_widget, entry_nome
+    global text_widget, entry_descricao
     # Configuração da janela principal
     root = tk.Tk()
-    root.title("Busca de Anime por Nome")
+    root.title("Busca de Anime por Descrição")
     root.geometry("800x600")
 
     # Configuração do estilo
@@ -75,11 +79,11 @@ def main():
     style.configure("TButton", font=("Helvetica", 12))
 
     # Widgets
-    label_nome = ttk.Label(root, text="Digite o nome do anime:")
-    label_nome.pack(pady=10)
+    label_descricao = ttk.Label(root, text="Digite a descrição do anime:")
+    label_descricao.pack(pady=10)
 
-    entry_nome = ttk.Entry(root, font=("Helvetica", 12))
-    entry_nome.pack(pady=10)
+    entry_descricao = ttk.Entry(root, font=("Helvetica", 12))
+    entry_descricao.pack(pady=10)
 
     button_buscar = ttk.Button(root, text="Buscar", command=buscar_anime)
     button_buscar.pack(pady=10)
