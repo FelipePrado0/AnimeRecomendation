@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 import json
 import tkinter as tk
 from tkinter import ttk, messagebox
+import os
 import pandas as pd
 
 def buscar_id_anime_por_nome(nome_anime):

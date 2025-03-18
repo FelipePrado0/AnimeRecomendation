@@ -1,7 +1,9 @@
 import unittest
 from unittest.mock import patch
 import requests
-from BuscarDescricao import buscar_id_anime_por_descricao
+import sys
+import os
+from AnimeRecomendation.src.BuscarDescricao import buscar_id_anime_por_descricao
 
 class TestGeminiAPI(unittest.TestCase):
 

@@ -2,28 +2,23 @@ import tkinter as tk
 from tkinter import ttk
 
 def abrir_buscar_por_nome():
-    # Aqui você pode importar e chamar a função do arquivo BuscarID.py
-    import BuscarID
+    from src import BuscarID
     BuscarID.main()
 
 def abrir_buscar_por_descricao():
-    # Aqui você pode importar e chamar a função do arquivo BuscarDescricao.py
-    import BuscarDescricao
+    from src import BuscarDescricao
     BuscarDescricao.main()
 
 def abrir_buscar_por_recomendacao():
-    # Aqui você pode importar e chamar a função do arquivo BuscarRecomendacao.py
-    from . import BuscarRecomendacao
+    from src import BuscarRecomendacao
     BuscarRecomendacao.main()
 
 def abrir_buscar_por_genero():
-    # Aqui você pode importar e chamar a função do arquivo BuscarGenero.py
-    from . import BuscarGenero
+    from src import BuscarGenero
     BuscarGenero.main()
 
 def abrir_buscar_por_nota():
-    # Aqui você pode importar e chamar a função do arquivo BuscarNota.py
-    from . import BuscarNota
+    from src import BuscarNota
     BuscarNota.main()
 
 # Configuração da janela principal
